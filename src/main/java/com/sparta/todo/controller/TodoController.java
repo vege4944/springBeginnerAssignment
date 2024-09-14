@@ -1,5 +1,6 @@
 package com.sparta.todo.controller;
 
+import com.sparta.todo.dto.TodoDeleteRequestDto;
 import com.sparta.todo.dto.TodoRequestDto;
 import com.sparta.todo.dto.TodoResponseDto;
 import com.sparta.todo.entity.Todo;
@@ -39,5 +40,13 @@ public class TodoController {
             @RequestBody TodoRequestDto todoRequestDto
     ){
         return todoService.updateTodo(todoId, todoRequestDto);
+    }
+
+    @DeleteMapping("/{todoId}") // 선택한 일정 삭제
+    public void deleteTodoByTodoId (
+            @PathVariable Long todoId,
+            @RequestBody TodoDeleteRequestDto todoDeleteRequestDto
+            ){
+        todoService.deleteTodoByTodoId(todoId, todoDeleteRequestDto);
     }
 }

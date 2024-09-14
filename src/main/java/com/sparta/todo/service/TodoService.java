@@ -1,5 +1,6 @@
 package com.sparta.todo.service;
 
+import com.sparta.todo.dto.TodoDeleteRequestDto;
 import com.sparta.todo.dto.TodoRequestDto;
 import com.sparta.todo.dto.TodoResponseDto;
 import com.sparta.todo.entity.Todo;
@@ -7,6 +8,7 @@ import com.sparta.todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,5 +82,21 @@ public class TodoService {
                 todo.getCreatedAt(), // 작성일 변경 안됨
                 todo.getModifiedAt() // 수정일은 수정 시점으로 변경됨
         );
+    }
+
+    @Transactional // 선택한 일정 삭제 시 비밀번호 필요
+    public void deleteTodoByTodoId(Long todoId, TodoDeleteRequestDto todoDeleteRequestDto) {
+       Long password = todoDeleteRequestDto.getPassword();
+        if (password == null) {
+            throw new NullPointerException("비밀번호가 맞지 않습니다.");
+        }
+
+        Todo todo = todoRepository.findById(todoId).orElseThrow(()-> new NullPointerException("찾으시는 일정이 없습니다."));
+
+        if (!password.equals(todo.getPassword())) {
+            throw new RuntimeException(("비밀번호가 틀립니다."));
+        }
+
+        todoRepository.deleteById(todoId);
     }
 }
