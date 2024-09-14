@@ -32,4 +32,12 @@ public class TodoController {
     public List<TodoResponseDto> getAllTodo (){
         return todoService.getAllTodo();
     }
+
+    @PutMapping("/{todoId}") // 특정 일정 아이디로 조회 후 수정
+    public TodoResponseDto updateTodoByTodoId (
+            @PathVariable Long todoId,
+            @RequestBody TodoRequestDto todoRequestDto
+    ){
+        return todoService.updateTodo(todoId, todoRequestDto);
+    }
 }

@@ -22,4 +22,9 @@ public class Todo extends Timestamped { // 작성일, 수정일 (날짜와 시�
         this.username = username;
         this.password = password;
     }
+
+    public void updateTodo(String todo, String username) {
+        this.todo = todo;
+        this.username = username;
+    }
 }

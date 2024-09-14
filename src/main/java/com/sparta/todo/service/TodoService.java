@@ -64,4 +64,21 @@ public class TodoService {
         }
         return dtoList;
     }
+
+    @Transactional
+    public TodoResponseDto updateTodo(Long todoId, TodoRequestDto todoRequestDto) { // 아이디로 조회 후 일정과 담당자명만 수정 가능
+        Todo todo = todoRepository.findById(todoId).orElseThrow(()-> new NullPointerException("찾으시는 일정이 없습니다."));
+        todo.updateTodo(
+                todoRequestDto.getTodo(),
+                todoRequestDto.getUsername()
+        );
+        return new TodoResponseDto(
+                todo.getId(),
+                todo.getTodo(),
+                todo.getUsername(),
+                todo.getPassword(), // 비밀번호 함께 전달
+                todo.getCreatedAt(), // 작성일 변경 안됨
+                todo.getModifiedAt() // 수정일은 수정 시점으로 변경됨
+        );
+    }
 }
