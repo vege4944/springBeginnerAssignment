@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -15,7 +17,7 @@ public class TodoService {
     private final TodoRepository todoRepository;
 
     @Transactional
-    public TodoResponseDto createTodo(TodoRequestDto todoRequestDto) {
+    public TodoResponseDto createTodo(TodoRequestDto todoRequestDto) { // 일정 생성 메서드
         Todo todo = new Todo(
                 todoRequestDto.getTodo(),
                 todoRequestDto.getUsername(),
@@ -31,4 +33,17 @@ public class TodoService {
                 todo.getModifiedAt()
         );
     }
+
+    public TodoResponseDto getTodoByTodoId(Long todoId) { // 일정 단건 조회 메서드
+        Todo todo = todoRepository.findById(todoId).orElseThrow(()-> new NullPointerException("찾으시는 일정이 없습니다."));
+        return new TodoResponseDto(
+                todo.getId(),
+                todo.getTodo(),
+                todo.getUsername(),
+                todo.getPassword(),
+                todo.getCreatedAt(),
+                todo.getModifiedAt()
+        );
+    }
+
 }
