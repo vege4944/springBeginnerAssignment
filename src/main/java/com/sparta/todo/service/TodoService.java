@@ -1,5 +1,8 @@
 package com.sparta.todo.service;
 
+import com.sparta.todo.dto.TodoRequestDto;
+import com.sparta.todo.dto.TodoResponseDto;
+import com.sparta.todo.entity.Todo;
 import com.sparta.todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,4 +14,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class TodoService {
     private final TodoRepository todoRepository;
 
+    @Transactional
+    public TodoResponseDto createTodo(TodoRequestDto todoRequestDto) {
+        Todo todo = new Todo(
+                todoRequestDto.getTodo(),
+                todoRequestDto.getUsername(),
+                todoRequestDto.getPassword()
+        );
+        todoRepository.save(todo);
+        return new TodoResponseDto(
+                todo.getId(),
+                todo.getTodo(),
+                todo.getUsername(),
+                todo.getPassword(),
+                todo.getCreatedAt(),
+                todo.getModifiedAt()
+        );
+    }
 }
