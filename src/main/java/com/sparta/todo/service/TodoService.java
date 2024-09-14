@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,4 +47,21 @@ public class TodoService {
         );
     }
 
+    public List<TodoResponseDto> getAllTodo() { // 일정 목록 조회 메서드 (수정일 기준 내림차순 정렬)
+        List<Todo> todoList = todoRepository.findAllByOrderByModifiedAtDesc();
+
+        List<TodoResponseDto> dtoList = new ArrayList<>();
+        for (Todo todo : todoList) {
+            TodoResponseDto dto = new TodoResponseDto(
+                    todo.getId(),
+                    todo.getTodo(),
+                    todo.getUsername(),
+                    todo.getPassword(),
+                    todo.getCreatedAt(),
+                    todo.getModifiedAt()
+            );
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
 }

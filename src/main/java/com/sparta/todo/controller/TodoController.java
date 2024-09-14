@@ -28,4 +28,8 @@ public class TodoController {
         return todoService.getTodoByTodoId(todoId);
     }
 
+    @GetMapping// 일정 목록 조회
+    public List<TodoResponseDto> getAllTodo (){
+        return todoService.getAllTodo();
+    }
 }
